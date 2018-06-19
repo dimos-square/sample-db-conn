@@ -3,7 +3,11 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [environ "1.1.0"]
+                 [org.clojure/java.jdbc "0.7.6"]
+                 [org.postgresql/postgresql "42.2.2"]
+                 [honeysql "0.9.2"]]
   :main ^:skip-aot sample-db-conn.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
