@@ -3,7 +3,9 @@
   (:require [environ.core :as env]
             [clojure.java.jdbc :as jdbc]
             [honeysql.core :as sql]
-            [honeysql.helpers :as h]))
+            [honeysql.helpers :as h]
+            [cheshire.core :as json])
+  (:import (org.postgresql.util PGobject)))
 
 (defn -main
   "I don't do a whole lot ... yet."
@@ -66,3 +68,13 @@
              :c {:g {:k 4 :j 7}}})
 ;; (:k (:g (:c hhhh))) equals (->> hhhh :c :g :k)
 ;; (((hhhh :c) :g) :k) equals (-> hhhh :c :g :k)
+
+(defn m->jsonb [m]
+  (doto (PGobject.)
+    (.setType "jsonb")
+    (.setValue (json/generate-string m))))
+
+(defn jsonb->m [jsonb]
+  (-> jsonb
+      .getValue
+      (json/parse-string keyword)))
