@@ -42,8 +42,8 @@
 ;; (assoc (assoc (assoc {} :a 1) :b 2) :c 3)
 ;; equals
 #_(-> (assoc {} :a 1)
-    (assoc :b 2)
-    (assoc :c 3))
+      (assoc :b 2)
+      (assoc :c 3))
 
 (defn select-from-table-2 []
   (jdbc/with-db-connection
@@ -58,5 +58,11 @@
     [db pgurl]
     (jdbc/query db (sql/format
                      {:select [:%distinct.col1]
-                      :from [:doom]
-                      :where [:<> :col2 s]}))))
+                      :from   [:doom]
+                      :where  [:<> :col2 s]}))))
+
+#_(def hhhh {:a "a"
+             :b 5
+             :c {:g {:k 4 :j 7}}})
+;; (:k (:g (:c hhhh))) equals (->> hhhh :c :g :k)
+;; (((hhhh :c) :g) :k) equals (-> hhhh :c :g :k)
