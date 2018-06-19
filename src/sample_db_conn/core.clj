@@ -1,7 +1,9 @@
 (ns sample-db-conn.core
   (:gen-class)
   (:require [environ.core :as env]
-            [clojure.java.jdbc :as jdbc]))
+            [clojure.java.jdbc :as jdbc]
+            [honeysql.core :as sql]
+            [honeysql.helpers :as h]))
 
 (defn -main
   "I don't do a whole lot ... yet."
@@ -36,3 +38,25 @@
                                   {:col1 "6", :col2 "9"}])
     (jdbc/query db "SELECT * FROM doom")))
 ;; (select-from-table)
+
+;; (assoc (assoc (assoc {} :a 1) :b 2) :c 3)
+;; equals
+#_(-> (assoc {} :a 1)
+    (assoc :b 2)
+    (assoc :c 3))
+
+(defn select-from-table-2 []
+  (jdbc/with-db-connection
+    [db pgurl]
+    (jdbc/query db (sql/format
+                     (-> (h/select :%distinct.col1)
+                         (h/from :doom)
+                         (h/where [:<> :col2 "9"]))))))
+
+(defn select-from-table-3 [s]
+  (jdbc/with-db-connection
+    [db pgurl]
+    (jdbc/query db (sql/format
+                     {:select [:%distinct.col1]
+                      :from [:doom]
+                      :where [:<> :col2 s]}))))
