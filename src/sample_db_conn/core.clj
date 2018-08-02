@@ -82,3 +82,5 @@
 #_(insert-in-table :a [{:b (m->jsonb {:g "r"})}
                        {:b (m->jsonb {:g 3})}
                        {:b (m->jsonb {:g true})}])
+
+;; just for testing
